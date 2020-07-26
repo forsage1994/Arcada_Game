@@ -6,7 +6,7 @@ using System.Net.Mime;
 
 namespace Arcada1
 {
-  public enum Moves : Byte
+  public enum Direction : Byte
   {
     Up,
     Down,
@@ -28,7 +28,7 @@ namespace Arcada1
     DownFirstFrame = 64,
     DownSecondFrame = 80,
     RightFirstFrame = 96,
-    RightSecondFrame = 112,
+    RightSecondFrame = 112
   }
   public enum TypeOfTank : Byte
   {
@@ -39,7 +39,14 @@ namespace Arcada1
     TypeFive = 64,
     TypeSix = 80,
     TypeSeven = 96,
-    TypeEight = 112,
+    TypeEight = 112
+  }
+  public enum BulletDirectionSprite : Byte
+  {
+    Up = 67,
+    Left = 74,
+    Down = 83,
+    Right = 90
   }
   /// <summary>
   /// This is the main type for your game.
@@ -122,14 +129,17 @@ namespace Arcada1
       if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         Exit();
 
+     // if(Keyboard.GetState().IsKeyDown(Keys.Space))
+        
+     // else 
       if (Keyboard.GetState().IsKeyDown(Keys.Up))
-        tank1.MovePlayer(Moves.Up);
+        tank1.MovePlayer(Direction.Up);
       else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-        tank1.MovePlayer(Moves.Down);
+        tank1.MovePlayer(Direction.Down);
       else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-        tank1.MovePlayer(Moves.Left);
+        tank1.MovePlayer(Direction.Left);
       else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-        tank1.MovePlayer(Moves.Right);
+        tank1.MovePlayer(Direction.Right);
       else if (counter % 600 == 0)
       {
 

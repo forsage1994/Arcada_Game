@@ -12,6 +12,8 @@ namespace Arcada1
   {
     public Texture2D Texture { get; set; }
     protected Vector2 Pos;
+    protected Rectangle sourceRectangle = new Rectangle();
+    protected Rectangle destinationRectangle = new Rectangle();
     public GameObject(Int32 X, Int32 Y)
     {
       this.Pos.X = X;

@@ -11,12 +11,11 @@ namespace Arcada1
   public class Tank : GameObject
   {
     private Int32 Lifes;
-    Moves CurrentDirection;
+    Direction CurrentDirection;
     FrameOfTank frame;
     TypeOfTank type;
-    Rectangle sourceRectangle = new Rectangle();
-    Rectangle destinationRectangle = new Rectangle();
-//    static Byte multiplication;
+//    Rectangle sourceRectangle = new Rectangle();
+ //   Rectangle destinationRectangle = new Rectangle();
     public Tank(Int32 PosX, Int32 PosY, Byte mult)
       : base(PosX, PosY)
     {
@@ -24,14 +23,14 @@ namespace Arcada1
       this.destinationRectangle.Y = PosY;
       this.destinationRectangle.Width = this.destinationRectangle.Height = 16 * mult;
       this.Lifes = 1;
-      this.CurrentDirection = Moves.Up;
+      this.CurrentDirection = Direction.Up;
       sourceRectangle.Width = sourceRectangle.Height = 16;
     }
-    public void MovePlayer(Moves Direction)
+    public void MovePlayer(Direction Direction)
     {
       switch (Direction)
       {
-        case Moves.Up:
+        case Direction.Up:
           if(frame != FrameOfTank.UpFirstFrame)
           {
             frame = FrameOfTank.UpFirstFrame;
@@ -41,9 +40,9 @@ namespace Arcada1
             frame = FrameOfTank.UpSecondFrame;
           }
           destinationRectangle.Y -= 1;
-          this.CurrentDirection = Moves.Up;
+          this.CurrentDirection = Direction.Up;
           break;
-        case Moves.Down:
+        case Direction.Down:
           if (frame != FrameOfTank.DownFirstFrame)
           {
             frame = FrameOfTank.DownFirstFrame;
@@ -53,9 +52,9 @@ namespace Arcada1
             frame = FrameOfTank.DownSecondFrame;
           }
           destinationRectangle.Y += 1;
-          this.CurrentDirection = Moves.Down;
+          this.CurrentDirection = Direction.Down;
           break;
-        case Moves.Left:
+        case Direction.Left:
           if (frame != FrameOfTank.LeftFirstFrame)
           {
             frame = FrameOfTank.LeftFirstFrame;
@@ -65,9 +64,9 @@ namespace Arcada1
             frame = FrameOfTank.LeftSecondFrame;
           }
           destinationRectangle.X -= 1;
-          this.CurrentDirection = Moves.Left;
+          this.CurrentDirection = Direction.Left;
           break;
-        case Moves.Right:
+        case Direction.Right:
           if (frame != FrameOfTank.RightFirstFrame)
           {
             frame = FrameOfTank.RightFirstFrame;
@@ -77,7 +76,7 @@ namespace Arcada1
             frame = FrameOfTank.RightSecondFrame;
           }
           destinationRectangle.X += 1;
-          this.CurrentDirection = Moves.Right;
+          this.CurrentDirection = Direction.Right;
           break;
       }
     }
