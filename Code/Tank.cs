@@ -26,7 +26,7 @@ namespace Arcada1
       this.CurrentDirection = Direction.Up;
       sourceRectangle.Width = sourceRectangle.Height = 16;
     }
-    public void MovePlayer(Direction Direction)
+    public void Update(Direction Direction)
     {
       switch (Direction)
       {
@@ -86,5 +86,6 @@ namespace Arcada1
       sourceRectangle.Y = (Int32)type;
           spriteBatch.Draw(this.Texture, destinationRectangle, sourceRectangle, Color.White);
     }
+    public Rectangle GetPosForFire => new Rectangle(destinationRectangle.X + 8, destinationRectangle.Y + 8, 10, 10);
   }
 }

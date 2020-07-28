@@ -19,5 +19,9 @@ namespace Arcada1
       this.Pos.X = X;
       this.Pos.Y = Y;
     }
+    public GameObject(Rectangle destinationRectangle)
+    {
+      this.destinationRectangle = destinationRectangle;
+    }
   }
 }

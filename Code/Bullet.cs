@@ -15,11 +15,10 @@ namespace Arcada1
     private readonly Direction direction;
     private readonly Byte speed;
     public BulletDirectionSprite bulletDirection;
-    public Bullet(Int32 x, Int32 y, Direction direction, Byte speed)
-      : base(x,y)
+    public Bullet(Rectangle destinationRectangle, Direction direction, Byte speed)
+      : base(destinationRectangle)
     {
-      this.destinationRectangle.X = x;
-      this.destinationRectangle.Y = y;
+      this.destinationRectangle = destinationRectangle;
       this.direction = direction;
       this.speed = speed;
 

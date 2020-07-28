@@ -41,7 +41,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Code\BattleCity.cs" />
     <Compile Include="Code\Bullet.cs" />
+    <Compile Include="Code\GameLogic.cs" />
     <Compile Include="Code\Tank.cs" />
     <Compile Include="Code\GameObject.cs" />
     <Compile Include="Code\Target.cs" />

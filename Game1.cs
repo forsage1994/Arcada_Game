@@ -6,6 +6,13 @@ using System.Net.Mime;
 
 namespace Arcada1
 {
+  public enum Stat
+  {
+    SplashScreen,
+    Game,
+    GameOver,
+    Pause
+  }
   public enum Direction : Byte
   {
     Up,
@@ -64,6 +71,7 @@ namespace Arcada1
     Color BackgroundColor = new Color();
     //   Player player = new Player(100, 100, texture);
     Tank tank1 = new Tank(100, 100, 6);
+    Stat Stat = Stat.SplashScreen;
     //List<Target>
 
     public Game1()
@@ -129,21 +137,37 @@ namespace Arcada1
       if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         Exit();
 
-     // if(Keyboard.GetState().IsKeyDown(Keys.Space))
-        
-     // else 
-      if (Keyboard.GetState().IsKeyDown(Keys.Up))
-        tank1.MovePlayer(Direction.Up);
-      else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-        tank1.MovePlayer(Direction.Down);
-      else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-        tank1.MovePlayer(Direction.Left);
-      else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-        tank1.MovePlayer(Direction.Right);
-      else if (counter % 600 == 0)
+      switch (Stat)
       {
+        case Stat.SplashScreen:
+          if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            Stat = Stat.Game;
+          break;
 
+        case Stat.Game:
+          if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            new Bullet(tank1.GetPosForFire, Direction.Up, 1);
+          else
+if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            BattleCity.Update(Direction.Up);
+          else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            BattleCity.Update(Direction.Down);
+          else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            BattleCity.Update(Direction.Left);
+          else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            BattleCity.Update(Direction.Right);
+          break;
+
+        case Stat.GameOver:
+
+          break;
+
+        case Stat.Pause:
+
+          break;
       }
+      
+
 
       //pos.X += dirX;
       //pos.Y += dirY;
@@ -163,12 +187,30 @@ namespace Arcada1
     protected override void Draw(GameTime gameTime)
     {
       GraphicsDevice.Clear(Color.Black);
-      //graphics.PreferMultiSampling = false;
-      //graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-      spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
-      
 
-      tank1.Draw(spriteBatch);
+      spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+
+      switch (Stat)
+      {
+        case Stat.SplashScreen:
+
+          break;
+
+        case Stat.Game:
+          tank1.Draw(spriteBatch);
+          break;
+
+        case Stat.GameOver:
+
+          break;
+
+        case Stat.Pause:
+
+          break;
+      }
+
+
+      
       spriteBatch.End();
 
       // TODO: Add your drawing code here
