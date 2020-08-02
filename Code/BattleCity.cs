@@ -48,20 +48,25 @@ namespace Arcada1
         tank.UpdateBullet();
       }
     }
- /*   public static void CheckHit()
+    public static void CheckHit()
     {
       foreach (Tank tank in tanks)
       {
-        if (Player.bullet.destinationRectangle.X <= tank.)
-        {
 
+        if ((Player.bullet != null) && (tanks.Count > 1) && tank.IsLife() &&
+          ((Player.bullet.destinationRectangle.X < (tank.destinationRectangle.X + tank.destinationRectangle.Width)) &&
+            (Player.bullet.destinationRectangle.X + Player.bullet.destinationRectangle.Width > tank.destinationRectangle.X)) &&
+            ((Player.bullet.destinationRectangle.Y < (tank.destinationRectangle.Y + tank.destinationRectangle.Height)) &&
+            (Player.bullet.destinationRectangle.Y + Player.bullet.destinationRectangle.Height > tank.destinationRectangle.Y)))
+        {
+          tank.HitByAnotherTank();
+          Player.bullet = null;
         }
       }
     }
- */
     public static void AddTank(Texture2D texture)
     {
-      tanks.Add(new Tank(GetRnd(FieldWidth / 2,FieldWidth - 20), GetRnd(0, FieldHeight), texture, FieldWidth, FieldHeight));
+      tanks.Add(new Tank(GetRnd(FieldWidth / 2, FieldWidth - 20), GetRnd(0, FieldHeight), texture, FieldWidth, FieldHeight));
     }
   }
 }

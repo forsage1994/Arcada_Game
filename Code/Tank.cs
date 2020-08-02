@@ -84,7 +84,10 @@ namespace Arcada1
     {
       sourceRectangle.X = (Int32)frame;
       sourceRectangle.Y = (Int32)type;
-      spriteBatch.Draw(this.Texture, this.destinationRectangle, this.sourceRectangle, Color.White);
+      if (Lifes != 0)
+        spriteBatch.Draw(this.Texture, this.destinationRectangle, this.sourceRectangle, Color.White);
+      else
+        spriteBatch.Draw(this.Texture, this.destinationRectangle, this.sourceRectangle, Color.Black);
       this.DrawBullet(spriteBatch);
     }
     public void Fire(Texture2D sprites)
@@ -113,6 +116,18 @@ namespace Arcada1
     {
       if ((this.bullet.destinationRectangle.X <= -4) || (this.bullet.destinationRectangle.X >= FieldWidth) || (this.bullet.destinationRectangle.Y <= -4) || (this.bullet.destinationRectangle.Y >= FieldHeight))
         this.bullet = null;
+    }
+    public void HitToAnotherTank()
+    {
+
+    }
+    public void HitByAnotherTank()
+    {
+      this.Lifes = 0;
+    }
+    public bool IsLife()
+    {
+      return (this.Lifes > 0);
     }
   }
 }

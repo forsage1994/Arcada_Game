@@ -134,12 +134,13 @@ namespace Arcada1
           break;
 
         case Stat.Game:
-            BattleCity.UpdateBullet();
+          BattleCity.UpdateBullet();
+          BattleCity.CheckHit();
 
           if (Keyboard.GetState().IsKeyDown(Keys.H))
             BattleCity.AddTank(tank);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+          if (Keyboard.GetState().IsKeyDown(Keys.Space))
             BattleCity.Player.Fire(sprites);
           else if (Keyboard.GetState().IsKeyDown(Keys.Up))
             BattleCity.Update(Direction.Up);
