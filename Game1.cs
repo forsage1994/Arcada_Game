@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Net.Mime;
 
 namespace Arcada1
 {
@@ -62,33 +61,18 @@ namespace Arcada1
   {
     GraphicsDeviceManager graphics;
     static SpriteBatch spriteBatch;
-    static Texture2D texture;
-    Vector2 pos = new Vector2() { X = 0, Y = 0 };
-    static Vector2 centerOfRotation = new Vector2() { X = 15, Y = 15 };
-    Int64 counter = 0;
-    //    sbyte dirX = 1, dirY = 1;
+    static Texture2D tank, sprites;
+    BattleCity battleCity = new BattleCity();
     Random rnd = new Random();
-    Color BackgroundColor = new Color();
-    //   Player player = new Player(100, 100, texture);
-    Tank tank1 = new Tank(100, 100, 6);
     Stat Stat = Stat.SplashScreen;
-    //List<Target>
+
+    const Int32 Width = 1000, Height = 500;
 
     public Game1()
     {
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
     }
-
-    protected void ChangeDirection(Single Position, ref SByte Direction,
-                                Int32 ScreenSize, Int32 TextureSize)
-    {
-      if ((Position >= (ScreenSize - TextureSize)) || (Position <= 0))
-        Direction *= -1;
-    }
-
-      
-    
 
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
@@ -98,7 +82,9 @@ namespace Arcada1
     /// </summary>
     protected override void Initialize()
     {
-      
+      graphics.PreferredBackBufferWidth = Width;
+      graphics.PreferredBackBufferHeight = Height;
+      graphics.ApplyChanges();
       // TODO: Add your initialization logic here
       base.Initialize();
     }
@@ -110,10 +96,13 @@ namespace Arcada1
     protected override void LoadContent()
     {
       // Create a new SpriteBatch, which can be used to draw textures.
+      tank = Content.Load<Texture2D>("yellow_tanks");
+      sprites = Content.Load<Texture2D>("other_sprites");
       spriteBatch = new SpriteBatch(GraphicsDevice);
-      tank1.Texture = Content.Load<Texture2D>("yellow_tanks");
+      battleCity.Init(spriteBatch, Width, Height, tank);
+      //      tank1.Texture = Content.Load<Texture2D>("yellow_tanks");
       //     player.SetTexture(texture);
-      
+
 
       // TODO: use this.Content to load your game content here
     }
@@ -140,15 +129,19 @@ namespace Arcada1
       switch (Stat)
       {
         case Stat.SplashScreen:
-          if (Keyboard.GetState().IsKeyDown(Keys.Space))
+          if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             Stat = Stat.Game;
           break;
 
         case Stat.Game:
-          if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            new Bullet(tank1.GetPosForFire, Direction.Up, 1);
-          else
-if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            BattleCity.UpdateBullet();
+
+          if (Keyboard.GetState().IsKeyDown(Keys.H))
+            BattleCity.AddTank(tank);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            BattleCity.Player.Fire(sprites);
+          else if (Keyboard.GetState().IsKeyDown(Keys.Up))
             BattleCity.Update(Direction.Up);
           else if (Keyboard.GetState().IsKeyDown(Keys.Down))
             BattleCity.Update(Direction.Down);
@@ -166,18 +159,10 @@ if (Keyboard.GetState().IsKeyDown(Keys.Up))
 
           break;
       }
-      
 
 
-      //pos.X += dirX;
-      //pos.Y += dirY;
-
-      //      ChangeDirection(pos.X, ref dirX, Window.ClientBounds.Width, texture.Width / 10);
-      //      ChangeDirection(pos.Y, ref dirY, Window.ClientBounds.Height, texture.Height / 10);
 
       base.Update(gameTime);
-
-      ++counter;
     }
 
     /// <summary>
@@ -197,7 +182,9 @@ if (Keyboard.GetState().IsKeyDown(Keys.Up))
           break;
 
         case Stat.Game:
-          tank1.Draw(spriteBatch);
+          BattleCity.Draw();
+
+          //          tank1.Draw(spriteBatch);
           break;
 
         case Stat.GameOver:
@@ -210,7 +197,7 @@ if (Keyboard.GetState().IsKeyDown(Keys.Up))
       }
 
 
-      
+
       spriteBatch.End();
 
       // TODO: Add your drawing code here

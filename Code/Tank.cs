@@ -1,37 +1,37 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace Arcada1
 {
   public class Tank : GameObject
   {
+    public static Int32 FieldWidth, FieldHeight;
     private Int32 Lifes;
     Direction CurrentDirection;
     FrameOfTank frame;
     TypeOfTank type;
-//    Rectangle sourceRectangle = new Rectangle();
- //   Rectangle destinationRectangle = new Rectangle();
-    public Tank(Int32 PosX, Int32 PosY, Byte mult)
+    public Bullet bullet = null;
+    public Tank(Int32 PosX, Int32 PosY, Texture2D texture, Int32 fieldWidth, Int32 fieldHeight)
       : base(PosX, PosY)
     {
       this.destinationRectangle.X = PosX;
       this.destinationRectangle.Y = PosY;
-      this.destinationRectangle.Width = this.destinationRectangle.Height = 16 * mult;
+      this.destinationRectangle.Width = this.destinationRectangle.Height = 16;
+      this.Texture = texture;
       this.Lifes = 1;
       this.CurrentDirection = Direction.Up;
-      sourceRectangle.Width = sourceRectangle.Height = 16;
+      this.sourceRectangle.Width = this.sourceRectangle.Height = 16;
+      FieldHeight = fieldHeight;
+      FieldWidth = fieldWidth;
     }
     public void Update(Direction Direction)
     {
+      this.CurrentDirection = Direction;
       switch (Direction)
       {
         case Direction.Up:
-          if(frame != FrameOfTank.UpFirstFrame)
+          if (frame != FrameOfTank.UpFirstFrame)
           {
             frame = FrameOfTank.UpFirstFrame;
           }
@@ -39,7 +39,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.UpSecondFrame;
           }
-          destinationRectangle.Y -= 1;
+          this.destinationRectangle.Y -= 1;
           this.CurrentDirection = Direction.Up;
           break;
         case Direction.Down:
@@ -51,7 +51,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.DownSecondFrame;
           }
-          destinationRectangle.Y += 1;
+          this.destinationRectangle.Y += 1;
           this.CurrentDirection = Direction.Down;
           break;
         case Direction.Left:
@@ -63,7 +63,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.LeftSecondFrame;
           }
-          destinationRectangle.X -= 1;
+          this.destinationRectangle.X -= 1;
           this.CurrentDirection = Direction.Left;
           break;
         case Direction.Right:
@@ -75,7 +75,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.RightSecondFrame;
           }
-          destinationRectangle.X += 1;
+          this.destinationRectangle.X += 1;
           this.CurrentDirection = Direction.Right;
           break;
       }
@@ -84,8 +84,35 @@ namespace Arcada1
     {
       sourceRectangle.X = (Int32)frame;
       sourceRectangle.Y = (Int32)type;
-          spriteBatch.Draw(this.Texture, destinationRectangle, sourceRectangle, Color.White);
+      spriteBatch.Draw(this.Texture, this.destinationRectangle, this.sourceRectangle, Color.White);
+      this.DrawBullet(spriteBatch);
     }
-    public Rectangle GetPosForFire => new Rectangle(destinationRectangle.X + 8, destinationRectangle.Y + 8, 10, 10);
+    public void Fire(Texture2D sprites)
+    {
+      if (this.bullet == null)
+      {
+        this.bullet = new Bullet(this.destinationRectangle.X, this.destinationRectangle.Y, this.CurrentDirection, 4, this, sprites);
+      }
+    }
+    public void DrawBullet(SpriteBatch spriteBatch)
+    {
+      if (this.bullet != null)
+      {
+        this.bullet.Draw(spriteBatch);
+      }
+    }
+    public void UpdateBullet()
+    {
+      if (this.bullet != null)
+      {
+        this.bullet.Update();
+        this.CheckBullet();
+      }
+    }
+    public void CheckBullet()
+    {
+      if ((this.bullet.destinationRectangle.X <= -4) || (this.bullet.destinationRectangle.X >= FieldWidth) || (this.bullet.destinationRectangle.Y <= -4) || (this.bullet.destinationRectangle.Y >= FieldHeight))
+        this.bullet = null;
+    }
   }
 }

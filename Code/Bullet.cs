@@ -1,44 +1,59 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
+using System;
 
 namespace Arcada1
 {
   public class Bullet : GameObject
   {
-//    public Byte Damage { get; set; }
+    //    public Byte Damage { get; set; }
+    private Tank owner;
     private readonly Direction direction;
     private readonly Byte speed;
     public BulletDirectionSprite bulletDirection;
-    public Bullet(Rectangle destinationRectangle, Direction direction, Byte speed)
-      : base(destinationRectangle)
+    public Bullet(Int32 x, Int32 y, Direction direction, Byte speed, Tank tank, Texture2D sprites)
+      : base(x, y)
     {
-      this.destinationRectangle = destinationRectangle;
       this.direction = direction;
       this.speed = speed;
+      this.owner = tank;
+      this.Texture = sprites;
+      this.sourceRectangle.Y = 102;
 
       switch (direction)
       {
         case Direction.Up:
           bulletDirection = BulletDirectionSprite.Up;
+          this.destinationRectangle.X = x + 6;
+          this.destinationRectangle.Y = y - 2;
+          destinationRectangle.Width = sourceRectangle.Width = 3;
+          destinationRectangle.Height = sourceRectangle.Height = 4;
           break;
         case Direction.Down:
           bulletDirection = BulletDirectionSprite.Down;
+          this.destinationRectangle.X = x + 6;
+          this.destinationRectangle.Y = y + 14;
+          destinationRectangle.Width = sourceRectangle.Width = 3;
+          destinationRectangle.Height = sourceRectangle.Height = 4;
           break;
         case Direction.Left:
           bulletDirection = BulletDirectionSprite.Left;
+          this.destinationRectangle.X = x - 2;
+          this.destinationRectangle.Y = y + 6;
+          destinationRectangle.Width = sourceRectangle.Width = 4;
+          destinationRectangle.Height = sourceRectangle.Height = 3;
           break;
         case Direction.Right:
           bulletDirection = BulletDirectionSprite.Right;
+          this.destinationRectangle.X = x + 14;
+          this.destinationRectangle.Y = y + 6;
+          destinationRectangle.Width = sourceRectangle.Width = 4;
+          destinationRectangle.Height = sourceRectangle.Height = 3;
           break;
       }
+      this.sourceRectangle.X = (int)bulletDirection;
     }
-    public void Move()
+    public void Update()
     {
       switch (direction)
       {
@@ -58,8 +73,6 @@ namespace Arcada1
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-      sourceRectangle.X = (int)bulletDirection;
-      sourceRectangle.Y = 102;
       spriteBatch.Draw(this.Texture, destinationRectangle, sourceRectangle, Color.White);
     }
   }

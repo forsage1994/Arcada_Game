@@ -1,10 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace Arcada1
 {
@@ -13,7 +9,7 @@ namespace Arcada1
     public Texture2D Texture { get; set; }
     protected Vector2 Pos;
     protected Rectangle sourceRectangle = new Rectangle();
-    protected Rectangle destinationRectangle = new Rectangle();
+    public Rectangle destinationRectangle = new Rectangle();
     public GameObject(Int32 X, Int32 Y)
     {
       this.Pos.X = X;
