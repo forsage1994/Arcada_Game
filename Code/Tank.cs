@@ -8,22 +8,23 @@ namespace Arcada1
   {
     public static Int32 FieldWidth, FieldHeight;
     private Int32 Lifes;
-    Direction CurrentDirection;
-    FrameOfTank frame;
-    TypeOfTank type;
+    private Direction CurrentDirection;
+    private FrameOfTank frame;
+    private TypeOfTank type;
     public Bullet bullet = null;
-    public Tank(Int32 PosX, Int32 PosY, Texture2D texture, Int32 fieldWidth, Int32 fieldHeight)
-      : base(PosX, PosY)
+    public Tank(Int32 PosX, Int32 PosY, Texture2D texture, Int32 fieldWidth, Int32 fieldHeight, Int32 multiplication)
+      : base(PosX, PosY, multiplication)
     {
-      this.destinationRectangle.X = PosX;
-      this.destinationRectangle.Y = PosY;
-      this.destinationRectangle.Width = this.destinationRectangle.Height = 16;
+      this.destinationRectangle.X = PosX * multiplication;
+      this.destinationRectangle.Y = PosY * multiplication;
+      this.destinationRectangle.Width = this.destinationRectangle.Height = 16 * multiplication;
       this.Texture = texture;
       this.Lifes = 1;
       this.CurrentDirection = Direction.Up;
       this.sourceRectangle.Width = this.sourceRectangle.Height = 16;
-      FieldHeight = fieldHeight;
-      FieldWidth = fieldWidth;
+      FieldHeight = fieldHeight * multiplication;
+      FieldWidth = fieldWidth * multiplication;
+      this.multiplication = multiplication;
     }
     public void Update(Direction Direction)
     {
@@ -39,7 +40,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.UpSecondFrame;
           }
-          this.destinationRectangle.Y -= 1;
+          this.destinationRectangle.Y -= 1 * multiplication;
           this.CurrentDirection = Direction.Up;
           break;
         case Direction.Down:
@@ -51,7 +52,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.DownSecondFrame;
           }
-          this.destinationRectangle.Y += 1;
+          this.destinationRectangle.Y += 1 * multiplication;
           this.CurrentDirection = Direction.Down;
           break;
         case Direction.Left:
@@ -63,7 +64,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.LeftSecondFrame;
           }
-          this.destinationRectangle.X -= 1;
+          this.destinationRectangle.X -= 1 * multiplication;
           this.CurrentDirection = Direction.Left;
           break;
         case Direction.Right:
@@ -75,7 +76,7 @@ namespace Arcada1
           {
             frame = FrameOfTank.RightSecondFrame;
           }
-          this.destinationRectangle.X += 1;
+          this.destinationRectangle.X += 1 * multiplication;
           this.CurrentDirection = Direction.Right;
           break;
       }
@@ -94,7 +95,7 @@ namespace Arcada1
     {
       if (this.bullet == null)
       {
-        this.bullet = new Bullet(this.destinationRectangle.X, this.destinationRectangle.Y, this.CurrentDirection, 4, this, sprites);
+        this.bullet = new Bullet(this.destinationRectangle.X, this.destinationRectangle.Y, this.CurrentDirection, 2, this, sprites, this.multiplication);
       }
     }
     public void DrawBullet(SpriteBatch spriteBatch)
@@ -114,7 +115,10 @@ namespace Arcada1
     }
     public void CheckBullet()
     {
-      if ((this.bullet.destinationRectangle.X <= -4) || (this.bullet.destinationRectangle.X >= FieldWidth) || (this.bullet.destinationRectangle.Y <= -4) || (this.bullet.destinationRectangle.Y >= FieldHeight))
+      if ((this.bullet.destinationRectangle.X <= (-4 * multiplication)) ||
+          (this.bullet.destinationRectangle.X > FieldWidth) ||
+          (this.bullet.destinationRectangle.Y <= (-4 * multiplication)) ||
+          (this.bullet.destinationRectangle.Y > FieldHeight))
         this.bullet = null;
     }
     public void HitToAnotherTank()
@@ -123,7 +127,7 @@ namespace Arcada1
     }
     public void HitByAnotherTank()
     {
-      this.Lifes = 0;
+      //this.Lifes = 0;
     }
     public bool IsLife()
     {

@@ -10,10 +10,12 @@ namespace Arcada1
     protected Vector2 Pos;
     protected Rectangle sourceRectangle = new Rectangle();
     public Rectangle destinationRectangle = new Rectangle();
-    public GameObject(Int32 X, Int32 Y)
+    protected Int32 multiplication;
+    public GameObject(Int32 X, Int32 Y, Int32 multiplication)
     {
       this.Pos.X = X;
       this.Pos.Y = Y;
+      this.multiplication = multiplication;
     }
     public GameObject(Rectangle destinationRectangle)
     {

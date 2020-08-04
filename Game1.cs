@@ -65,13 +65,24 @@ namespace Arcada1
     BattleCity battleCity = new BattleCity();
     Random rnd = new Random();
     Stat Stat = Stat.SplashScreen;
-
+    const Int32 OriginalWidth = 256, OriginalHeight = 224;
+    readonly Int32 CurrentWidth, CurrentHeight;
+    readonly Int32 multiplication;
     const Int32 Width = 1000, Height = 500;
+    //const Int32 targetFPS = 60;
 
     public Game1()
     {
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
+
+      CurrentWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+      CurrentHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+      if ((CurrentWidth / OriginalWidth) < (CurrentHeight / OriginalHeight))
+        multiplication = CurrentWidth / OriginalWidth;
+      else
+        multiplication = CurrentHeight / OriginalHeight;
     }
 
     /// <summary>
@@ -82,11 +93,16 @@ namespace Arcada1
     /// </summary>
     protected override void Initialize()
     {
-      graphics.PreferredBackBufferWidth = Width;
-      graphics.PreferredBackBufferHeight = Height;
+      graphics.PreferredBackBufferWidth = OriginalWidth * multiplication;
+      graphics.PreferredBackBufferHeight = OriginalHeight * multiplication;
+      //graphics.SynchronizeWithVerticalRetrace = false; //Vsync
+      //IsFixedTimeStep = true;
+      //TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0f / targetFPS);
       graphics.ApplyChanges();
       // TODO: Add your initialization logic here
       base.Initialize();
+
+      
     }
 
     /// <summary>
@@ -99,7 +115,7 @@ namespace Arcada1
       tank = Content.Load<Texture2D>("yellow_tanks");
       sprites = Content.Load<Texture2D>("other_sprites");
       spriteBatch = new SpriteBatch(GraphicsDevice);
-      battleCity.Init(spriteBatch, Width, Height, tank);
+      battleCity.Init(spriteBatch, OriginalWidth, OriginalHeight, multiplication, tank);
       //      tank1.Texture = Content.Load<Texture2D>("yellow_tanks");
       //     player.SetTexture(texture);
 
@@ -142,7 +158,8 @@ namespace Arcada1
 
           if (Keyboard.GetState().IsKeyDown(Keys.Space))
             BattleCity.Player.Fire(sprites);
-          else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+          
+          if (Keyboard.GetState().IsKeyDown(Keys.Up))
             BattleCity.Update(Direction.Up);
           else if (Keyboard.GetState().IsKeyDown(Keys.Down))
             BattleCity.Update(Direction.Down);
